@@ -1,0 +1,22 @@
+.link-main-page {
+    margin: 40px;
+    display: block;
+}
+
+.date-input {
+    margin-top: 68px;
+    margin-left: 156px;
+}
+
+
+
+.timer {
+    margin-top: 32px;
+    margin-left: 156px;
+    display: flex;
+    gap: 24px;
+}
+
+.field {
+
+}
