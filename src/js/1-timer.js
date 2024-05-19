@@ -13,11 +13,13 @@ const calender = document.querySelector("input#datetime-picker");
 const startBtn = document.querySelector(".date-btn");
 
 const timerElements = {
-    days: document.querySelector("[data-days"),
+    days: document.querySelector("[data-days]"),
     hours: document.querySelector("[data-hours]"),
     minutes: document.querySelector("[data-minutes]"),
     seconds: document.querySelector("[data-seconds]"),
 };
+
+// console.log(timerElements.days);
 
 let userSelectedDate = null;
 
