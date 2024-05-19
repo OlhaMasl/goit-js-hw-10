@@ -29,11 +29,13 @@ const options = {
   defaultDate: new Date(),
   minuteIncrement: 1,
   onClose(selectedDates) {
-      console.log(selectedDates[0]);
-
-      const currentDate = new Date();
+    // console.log(selectedDates[0]);
+    const selectedDatesMs = Date.parse(selectedDates[0]);
+    const currentDate = Date.now();
+    const dateDiff = selectedDatesMs - currentDate;
+    // console.log(dateDiff);
     
-      if (currentDate > selectedDates[0]) {
+      if (dateDiff <= 0) {
           iziToast.show({
               message: 'Please choose a date in the future',
               messageColor: 'white',
@@ -43,15 +45,36 @@ const options = {
               maxWidth: 302,
               position: 'topRight',
           });
-        //   startBtn.disabled = true;
+          startBtn.disabled = true;
       } else {
-        // startBtn.disabled = false;
-         return userSelectedDate = selectedDates[0];
+        startBtn.disabled = false;
+        timer(dateDiff);
+        //  return userSelectedDate = selectedDates[0];
       }
   },
 };
  
 flatpickr(calender, options);
+
+const timer = (msec) => {
+  startBtn.disabled = true;
+  const interval = setInterval(() => {
+    if (msec === 0) {
+      clearInterval(interval);
+    };
+    msec = msec - 1000;
+    let dateObj = convertMs(msec);
+    timerElements.days.innerHTML = addZero(dateObj.days);
+    timerElements.hours.innerHTML = addZero(dateObj.hours);
+    timerElements.minutes.innerHTML = addZero(dateObj.minutes);
+    timerElements.seconds.innerHTML = addZero(dateObj.seconds);
+  }, 1000);
+}
+
+startBtn.addEventListener("click", timer);
+
+
+
 function convertMs(ms) {
   // Number of milliseconds per unit of time
   const second = 1000;
@@ -69,11 +92,9 @@ function convertMs(ms) {
   const seconds = Math.floor((((ms % day) % hour) % minute) / second);
 
   return { days, hours, minutes, seconds };
-}
+};
 
-console.log(convertMs(2000)); // {days: 0, hours: 0, minutes: 0, seconds: 2}
-console.log(convertMs(140000)); // {days: 0, hours: 0, minutes: 2, seconds: 20}
-console.log(convertMs(24140000)); // {days: 0, hours: 6 minutes: 42, seconds: 20}
-
-
+function addZero(value) {
+  return String(value).padStart(2, "0");
+};
  
