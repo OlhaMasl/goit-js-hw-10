@@ -19,8 +19,6 @@ const timerElements = {
     seconds: document.querySelector("[data-seconds]"),
 };
 
-// console.log(timerElements.days);
-
 let userSelectedDate = null;
 
 const options = {
@@ -30,9 +28,10 @@ const options = {
   minuteIncrement: 1,
   onClose(selectedDates) {
     // console.log(selectedDates[0]);
-    const selectedDatesMs = Date.parse(selectedDates[0]);
+    userSelectedDate = Date.parse(selectedDates[0]);
+    // console.log(userSelectedDate);
     const currentDate = Date.now();
-    const dateDiff = selectedDatesMs - currentDate;
+    const dateDiff = userSelectedDate - currentDate;
     // console.log(dateDiff);
     
       if (dateDiff <= 0) {
@@ -48,30 +47,88 @@ const options = {
           startBtn.disabled = true;
       } else {
         startBtn.disabled = false;
-        timer(dateDiff);
-        //  return userSelectedDate = selectedDates[0];
+        return userSelectedDate
       }
   },
 };
- 
-flatpickr(calender, options);
 
-const timer = (msec) => {
-  startBtn.disabled = true;
-  const interval = setInterval(() => {
-    if (msec === 0) {
+flatpickr(calender, options);
+  
+const timer = {
+  start() { 
+    const interval = setInterval(() => {
+      const currentTime = Date.now();
+      const deltaTime = userSelectedDate - currentTime;
+      console.log(interval);
+       if (deltaTime <= -1) {
       clearInterval(interval);
-    };
-    msec = msec - 1000;
-    let dateObj = convertMs(msec);
-    timerElements.days.innerHTML = addZero(dateObj.days);
-    timerElements.hours.innerHTML = addZero(dateObj.hours);
-    timerElements.minutes.innerHTML = addZero(dateObj.minutes);
-    timerElements.seconds.innerHTML = addZero(dateObj.seconds);
-  }, 1000);
+      };
+      const time = convertMs(deltaTime);
+      console.log(time);
+      timerElements.days.innerHTML = addZero(time.days);
+      timerElements.hours.innerHTML = addZero(time.hours);
+      timerElements.minutes.innerHTML = addZero(time.minutes);
+      timerElements.seconds.innerHTML = addZero(time.seconds);
+    }, 1000);
+  }
 }
 
-startBtn.addEventListener("click", timer);
+startBtn.addEventListener("click", () => {
+  timer.start();
+}); 
+
+
+// let userSelectedDate = null;
+
+// const options = {
+//   enableTime: true,
+//   time_24hr: true,
+//   defaultDate: new Date(),
+//   minuteIncrement: 1,
+//   onClose(selectedDates) {
+//     // console.log(selectedDates[0]);
+//     const selectedDatesMs = Date.parse(selectedDates[0]);
+//     const currentDate = Date.now();
+//     const dateDiff = selectedDatesMs - currentDate;
+//     // console.log(dateDiff);
+    
+//       if (dateDiff <= 0) {
+//           iziToast.show({
+//               message: 'Please choose a date in the future',
+//               messageColor: 'white',
+//               messageSize: '',
+//               messageLineHeight: '',
+//               backgroundColor: 'red',
+//               maxWidth: 302,
+//               position: 'topRight',
+//           });
+//           startBtn.disabled = true;
+//       } else {
+//         startBtn.disabled = false;
+//         timer(dateDiff);
+//         //  return userSelectedDate = selectedDates[0];
+//       }
+//   },
+// };
+ 
+// flatpickr(calender, options);
+
+// const timer = (msec) => {
+//   startBtn.disabled = true;
+//   const interval = setInterval(() => {
+//     if (msec === 0) {
+//       clearInterval(interval);
+//     };
+//     msec = msec - 1000;
+//     let dateObj = convertMs(msec);
+//     timerElements.days.innerHTML = addZero(dateObj.days);
+//     timerElements.hours.innerHTML = addZero(dateObj.hours);
+//     timerElements.minutes.innerHTML = addZero(dateObj.minutes);
+//     timerElements.seconds.innerHTML = addZero(dateObj.seconds);
+//   }, 1000);
+// }
+
+// startBtn.addEventListener("click", timer);
 
 
 
